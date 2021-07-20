@@ -56,16 +56,22 @@ describe("Voting dApp", function () {
             expect (await NFTVoting.candidates(0)).to.equal(cand1.address);
         });
 
-        it("Adding an existing candidate", async function () {
+        it("Failing to add an existing candidate", async function () {
             await expect (NFTVoting.addCandidates(cand1.address)).to.be.revertedWith("Candidate Exists");
         });
     });
 
     
     describe("Voting", function () {
-        it("Valid vote for a candidate", async function () {
+        it("Placing a valid vote for a candidate", async function () {
             await NFTVoting.connect(voter1).vote(cand1.address);
             expect(await NFTVoting.votesForCandidate(cand1.address)).to.equal(1);
+        });
+
+        it("Failing an attempt to vote without a ballot/vote twice", async function () {
+            await NFTVoting.connect(voter1).vote(cand1.address);
+            
+            await expect(NFTVoting.connect(voter1).vote(cand1.address)).to.be.revertedWith("No Ballots");
         });
 
         
