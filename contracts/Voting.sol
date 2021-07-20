@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-
 import "./@openzeppelin-contracts/token/ERC721/ERC721.sol";
 import "./@openzeppelin-contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "./@openzeppelin-contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "./@openzeppelin-contracts/access/Ownable.sol";
 import "./@openzeppelin-contracts/utils/Counters.sol";
 
@@ -11,22 +11,36 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
+    //election conclusion event
+    event concluded(address x, uint256 y);
+    
+    mapping(address => uint256) internal _ballotId;
     address[] public candidates;
     address public winner;
     bool active = true;
-
-    //election conclusion event
-    event concluded(address x, uint256 y);
-
+    //constructor
     constructor() ERC721("Ballot", "BAL") {}
 
-    function safeMint(address to) public onlyOwner {
-        _safeMint(to, _tokenIdCounter.current());
+    //safeMint has been provided by the openZeppelin Library
+    //Altered safeMint to store Ballot UUIDs with addresses for checks later
+    //Added a check to make sure no user gets two ballots
+      function safeMint(address to) public onlyOwner {
+          require(balanceOf(to) == 0,"Ballot Found");
+        uint256 tokenId = _tokenIdCounter.current();
+        _safeMint(to, tokenId);
+        _ballotId[to] = tokenId; 
         _tokenIdCounter.increment();
     }
 
+     //adding candidates to the candidates array
+    function addCandidates(address _candidate) external onlyOwner {
+        require(_isCandidate(_candidate) == false, "Candidate Exists");
 
-    //Internal function to check whether an address is a candidate 
+        candidates.push(_candidate);
+    }
+
+
+    //Internal function to check whether an address is a candidate
     function _isCandidate(address _candidateAddress)
         internal
         view
@@ -68,6 +82,7 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
             }
         }
 
+
         //checking for a draw
         //counting occurance of highest votes
         uint8 occurance = 0;
@@ -88,7 +103,7 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
 
         return (candidates[pointer], highest);
     }
-
+    
 
     //returning the votes for a candidate
     function votesForCandidate(address _candidateAddress)
@@ -105,10 +120,13 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     }
 
 
-    //adding candidates to the candidates array
-    function addCandidates(address memory _candidate) external onlyOwner {
-        require(_isCandidate(_candidate) == false, "Candidate Exists");
-
-        candidates.push(_candidate);
+     //voting
+    function vote(address _candidateAddress) external{
+        require(_isCandidate(_candidateAddress)==true,"Invalid Candidate");
+        require(balanceOf(msg.sender) > 0, "No Ballots");
+        require(_isCandidate(msg.sender)==false,"Candidates Cannot Vote");
+        uint256 tokenId = _ballotId[msg.sender];
+        safeTransferFrom(msg.sender, _candidateAddress, tokenId);
     }
+
 }
