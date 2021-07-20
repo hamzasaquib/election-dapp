@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
+
 import "./@openzeppelin-contracts/token/ERC721/ERC721.sol";
 import "./@openzeppelin-contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "./@openzeppelin-contracts/access/Ownable.sol";
@@ -24,20 +25,24 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
         _tokenIdCounter.increment();
     }
 
-    //a function to check if any address passed is a candidate
+
+    //Internal function to check whether an address is a candidate 
     function _isCandidate(address _candidateAddress)
         internal
         view
         returns (bool)
     {
+        //assigning the length of the candidates array to a helper variable
+        //conversion to uint8 to reduce gas fees
         uint8 candidatesLength = uint8(candidates.length);
-        for (uint256 i = 0; i < candidatesLength; i++) {
+        for (uint8 i = 0; i < candidatesLength; i++) {
             if (_candidateAddress == candidates[i]) {
                 return true;
             }
         }
         return false;
     }
+
 
     //concluding the election and determining the winner
     function conclude() external onlyOwner() {
@@ -46,6 +51,7 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
         (winner, votes) = highestVotes();
         emit concluded(winner, votes);
     }
+
 
     //calculating the highest votes
     function highestVotes() public view returns (address, uint256) {
@@ -83,6 +89,7 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
         return (candidates[pointer], highest);
     }
 
+
     //returning the votes for a candidate
     function votesForCandidate(address _candidateAddress)
         public
@@ -97,8 +104,9 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
         return balanceOf(_candidateAddress);
     }
 
+
     //adding candidates to the candidates array
-    function addCandidates(address _candidate) external onlyOwner {
+    function addCandidates(address memory _candidate) external onlyOwner {
         require(_isCandidate(_candidate) == false, "Candidate Exists");
 
         candidates.push(_candidate);
