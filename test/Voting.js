@@ -26,9 +26,10 @@ describe("Voting dApp", function () {
         //the address at index 0 is the owner's address
 
         [owner, cand1, cand2, cand3, voter1, voter2, voter3, ...voters] = await ethers.getSigners();
+        
         NFTVoting = await Voting.deploy();
         
-        //adding candidates
+        //adding three 
         await NFTVoting.addCandidates(cand1.address);
         await NFTVoting.addCandidates(cand2.address);
         await NFTVoting.addCandidates(cand3.address);
@@ -67,8 +68,8 @@ describe("Voting dApp", function () {
             await NFTVoting.connect(voter1).vote(cand1.address);
             expect(await NFTVoting.votesForCandidate(cand1.address)).to.equal(1);
         });
-
-        it("Failing an attempt to vote without a ballot/vote twice", async function () {
+-
+        it("Failed vote without a ballot", async function () {
             await NFTVoting.connect(voter1).vote(cand1.address);
             
             await expect(NFTVoting.connect(voter1).vote(cand1.address)).to.be.revertedWith("No Ballots");
@@ -78,7 +79,22 @@ describe("Voting dApp", function () {
     });
 
 
-    // //unit test template
+    //unit test template
+    describe("Testing conclude", function () {
+        it("", async function () {
+            
+        });
+
+        
+    });
+
+    
+
+    
+
+});
+
+// //unit test template
     // describe("Adding Candidates", function () {
     //     it("", async function () {
             
@@ -86,12 +102,6 @@ describe("Voting dApp", function () {
 
         
     // });
-
-    
-
-    
-
-});
 
     
 
