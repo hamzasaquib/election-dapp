@@ -52,7 +52,6 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
 
 
     ///@notice Internal function to check whether an address is a candidate
-
     function _isCandidate(address _candidateAddress)
         internal
         view
@@ -130,16 +129,17 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     }
 
      
-     ///@notice The Vote function aids voters in sending Ballots
-     ///@dev checks for a valid candidate address, voter account balance and whether the voter is a candidate
-     ///@param _candidateAddress must be a valid candidate address
+    ///@notice The Vote function aids voters in sending Ballots
+    ///@dev checks for a valid candidate address, voter account balance and whether the voter is a candidate
+    ///@param _candidateAddress must be a valid candidate address
     function vote(address _candidateAddress) external{
         //checking if election is still ongoing
         require(active == true,"Concluded");
         //checking if msg.sender has any ballots
         require(balanceOf(msg.sender) > 0, "No Ballots");
-        //checking if msg.sender is a candidate
+        //checking if address in argument is a candidate address
         require(_isCandidate(_candidateAddress)==true,"Invalid Candidate");
+        //checking if msg.sender is a candidate
         require(_isCandidate(msg.sender)==false,"Candidates Cannot Vote");
         uint256 tokenId = _ballotId[msg.sender];
         safeTransferFrom(msg.sender, _candidateAddress, tokenId);
