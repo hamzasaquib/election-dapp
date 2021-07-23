@@ -18,22 +18,25 @@ describe("Voting dApp", function () {
     let NFTVoting;
 
     //beforeEach will be executed before every unit test
+
     beforeEach(async function () {
+
         //linking the contract ABI
         Voting = await ethers.getContractFactory("MyToken");
+
         //deconstructing array into owner, candidates and voters
         //signers returns an array of 20 signers on the hardhat testing node
         //the address at index 0 is the owner's address
-
         [owner, cand1, cand2, cand3, voter1, voter2, voter3, ...voters] = await ethers.getSigners();
         
         NFTVoting = await Voting.deploy();
         
-        //adding three 
+        //adding three candidates
         await NFTVoting.addCandidates(cand1.address);
         await NFTVoting.addCandidates(cand2.address);
         await NFTVoting.addCandidates(cand3.address);
 
+        //minting three ballots
         await NFTVoting.safeMint(voter1.address);
         await NFTVoting.safeMint(voter2.address);
         await NFTVoting.safeMint(voter3.address);
@@ -114,16 +117,3 @@ describe("Voting dApp", function () {
         });    
     });
 });
-
-// //unit test template
-    // describe("Adding Candidates", function () {
-    //     it("", async function () {
-            
-    //     });
-
-        
-    // });
-
-    
-
-
