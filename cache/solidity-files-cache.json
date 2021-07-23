@@ -728,8 +728,8 @@
       ]
     },
     "D:\\project\\react-dapp\\contracts\\Voting.sol": {
-      "lastModificationDate": 1626782132289,
-      "contentHash": "c5ea29bb78bbda1636ba38e74a2ccbe5",
+      "lastModificationDate": 1627042340465,
+      "contentHash": "ff3739a30a51c206253014b341adbfce",
       "sourceName": "contracts/Voting.sol",
       "solcConfig": {
         "version": "0.8.3",

@@ -57,7 +57,7 @@ describe("Voting dApp", function () {
             expect (await NFTVoting.candidates(0)).to.equal(cand1.address);
         });
 
-        it("Failing to add an existing candidate", async function () {
+        it("Attempting to add an existing candidate", async function () {
             await expect (NFTVoting.addCandidates(cand1.address)).to.be.revertedWith("Candidate Exists");
         });
     });
@@ -75,23 +75,44 @@ describe("Voting dApp", function () {
             await expect(NFTVoting.connect(voter1).vote(cand1.address)).to.be.revertedWith("No Ballots");
         });
 
-        
-    });
+        it("Failed vote after election has concluded", async function () {
 
-
-    //unit test template
-    describe("Testing conclude", function () {
-        it("", async function () {
-            
+        await NFTVoting.conclude()
+        await expect(NFTVoting.connect(voter1).vote(cand1.address)).to.be.revertedWith("Concluded");
         });
 
         
     });
 
-    
 
-    
+    //Testing the conlude function
+    describe("conclude()", function () {
+        it("Checking if active status is changed to false", async function () {
+            await NFTVoting.connect(voter1).vote(cand1.address);
+            await NFTVoting.connect(voter2).vote(cand2.address);
+            await NFTVoting.connect(voter3).vote(cand2.address);
+            await NFTVoting.conclude();
 
+            expect(await NFTVoting.active()).to.equal(false);
+        });
+
+        it("Correct winner is declared", async function () {
+            await NFTVoting.connect(voter1).vote(cand1.address);
+            await NFTVoting.connect(voter2).vote(cand2.address);
+            await NFTVoting.connect(voter3).vote(cand2.address);
+            await NFTVoting.conclude();
+
+            expect(await NFTVoting.winner()).to.equal(cand2.address);
+        });
+
+        it("Draw scenario", async function () {
+            await NFTVoting.connect(voter1).vote(cand1.address);
+            await NFTVoting.connect(voter2).vote(cand2.address);
+            await NFTVoting.conclude();
+
+            expect(await NFTVoting.winner()).to.equal("0x0000000000000000000000000000000000000000");
+        });    
+    });
 });
 
 // //unit test template

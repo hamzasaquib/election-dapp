@@ -21,7 +21,7 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     event concluded(address x, uint256 y);
     
     //election state
-    bool active = true;
+    bool public active = true;
     
     //mappings for ownership    
     mapping(address => uint256) internal _ballotId;
@@ -31,10 +31,10 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     //constructor
     constructor() ERC721("Ballot", "BAL") {}
 
-    /*safeMint function is part of the openZeppelin library
+    ///safeMint function is part of the openZeppelin library
     ///@dev Altered safeMint to store maintain a global mapping, addresses=>UUIDs to conduct checks
     ///@notice Added a check to make sure no user gets two ballots
-    */
+    
       function safeMint(address to) public onlyOwner {
           require(balanceOf(to) == 0,"Ballot Found");
         uint256 tokenId = _tokenIdCounter.current();
@@ -52,16 +52,14 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
 
 
     ///@notice Internal function to check whether an address is a candidate
-    //TODO refactor to function modifier ? 
+
     function _isCandidate(address _candidateAddress)
         internal
         view
         returns (bool)
     {   
-        ///*@dev assigning the length of the candidates array to a helper variable conversion to uint8 to reduce gas fees
-        
-        uint8 candidatesLength = uint8(candidates.length);
-        for (uint8 i = 0; i < candidatesLength; i++) {
+        uint8 _candidatesLength = uint8(candidates.length);
+        for (uint8 i = 0; i < _candidatesLength; i++) {
             if (_candidateAddress == candidates[i]) {
                 return true;
             }
@@ -131,14 +129,17 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
         return balanceOf(_candidateAddress);
     }
 
-
      
      ///@notice The Vote function aids voters in sending Ballots
      ///@dev checks for a valid candidate address, voter account balance and whether the voter is a candidate
      ///@param _candidateAddress must be a valid candidate address
     function vote(address _candidateAddress) external{
-        require(_isCandidate(_candidateAddress)==true,"Invalid Candidate");
+        //checking if election is still ongoing
+        require(active == true,"Concluded");
+        //checking if msg.sender has any ballots
         require(balanceOf(msg.sender) > 0, "No Ballots");
+        //checking if msg.sender is a candidate
+        require(_isCandidate(_candidateAddress)==true,"Invalid Candidate");
         require(_isCandidate(msg.sender)==false,"Candidates Cannot Vote");
         uint256 tokenId = _ballotId[msg.sender];
         safeTransferFrom(msg.sender, _candidateAddress, tokenId);
