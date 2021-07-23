@@ -7,23 +7,34 @@ import "./@openzeppelin-contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "./@openzeppelin-contracts/access/Ownable.sol";
 import "./@openzeppelin-contracts/utils/Counters.sol";
 
+/// @author Muhammad Hamza Saquib Malik
+/// @title a simple voting application using NFTs for ballots
+
+
 contract MyToken is ERC721, ERC721Burnable, Ownable {
+
+    //counter allows for unique UUIDs on each ballot
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
     //election conclusion event
     event concluded(address x, uint256 y);
     
+    //election state
+    bool active = true;
+    
+    //mappings for ownership    
     mapping(address => uint256) internal _ballotId;
     address[] public candidates;
     address public winner;
-    bool active = true;
+    
     //constructor
     constructor() ERC721("Ballot", "BAL") {}
 
-    //safeMint has been provided by the openZeppelin Library
-    //Altered safeMint to store Ballot UUIDs with addresses for checks later
-    //Added a check to make sure no user gets two ballots
+    /*safeMint function is part of the openZeppelin library
+    ///@dev Altered safeMint to store maintain a global mapping, addresses=>UUIDs to conduct checks
+    ///@notice Added a check to make sure no user gets two ballots
+    */
       function safeMint(address to) public onlyOwner {
           require(balanceOf(to) == 0,"Ballot Found");
         uint256 tokenId = _tokenIdCounter.current();
@@ -32,22 +43,23 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
         _tokenIdCounter.increment();
     }
 
-     //adding candidates to the candidates array
-    function addCandidates(address _candidate) external onlyOwner {
+     ///@notice adding candidates to the candidates array
+     function addCandidates(address _candidate) external onlyOwner {
         require(_isCandidate(_candidate) == false, "Candidate Exists");
 
         candidates.push(_candidate);
     }
 
 
-    //Internal function to check whether an address is a candidate
+    ///@notice Internal function to check whether an address is a candidate
+    //TODO refactor to function modifier ? 
     function _isCandidate(address _candidateAddress)
         internal
         view
         returns (bool)
-    {
-        //assigning the length of the candidates array to a helper variable
-        //conversion to uint8 to reduce gas fees
+    {   
+        ///*@dev assigning the length of the candidates array to a helper variable conversion to uint8 to reduce gas fees
+        
         uint8 candidatesLength = uint8(candidates.length);
         for (uint8 i = 0; i < candidatesLength; i++) {
             if (_candidateAddress == candidates[i]) {
@@ -58,16 +70,17 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     }
 
 
-    //concluding the election and determining the winner
+    ///@notice concluding the election and determining the winner
     function conclude() external onlyOwner() {
         active = false;
-        uint256 votes;
-        (winner, votes) = highestVotes();
-        emit concluded(winner, votes);
+        uint256 _votes;
+        (winner, _votes) = highestVotes();
+        emit concluded(winner, _votes);
     }
 
 
-    //calculating the highest votes
+    ////@notice calculating the highest votes
+    ///@return candidate address with highest votes and its balance
     function highestVotes() public view returns (address, uint256) {
         uint8 candidatesLength = uint8(candidates.length);
         uint256 highest = balanceOf(candidates[0]);
@@ -94,9 +107,7 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
                 occurance++;
             }
             if (occurance > 1) {
-                //if more than one candidate has the highest votes
-                //there wil be no winner and function returns
-                //a zero address
+                ///@dev there wil be no winner and function returns a zero address
                 return (0x0000000000000000000000000000000000000000, highest);
             }
         }
@@ -105,7 +116,8 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     }
     
 
-    //returning the votes for a candidate
+    ///@param _candidateAddress must be a valid candidate address
+    ///@return votes for candidate
     function votesForCandidate(address _candidateAddress)
         public
         view
@@ -120,7 +132,10 @@ contract MyToken is ERC721, ERC721Burnable, Ownable {
     }
 
 
-     //voting
+     
+     ///@notice The Vote function aids voters in sending Ballots
+     ///@dev checks for a valid candidate address, voter account balance and whether the voter is a candidate
+     ///@param _candidateAddress must be a valid candidate address
     function vote(address _candidateAddress) external{
         require(_isCandidate(_candidateAddress)==true,"Invalid Candidate");
         require(balanceOf(msg.sender) > 0, "No Ballots");
