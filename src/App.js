@@ -1,7 +1,12 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { ethers } from 'ethers';
 import './App.css';
+import Voting from './artifacts/contracts/Voting.sol/MyToken.json';
+
+const votingAddress = "add address here";
 
 function App() {
+  
   return (
     <div className="App">
       <header className="App-header">

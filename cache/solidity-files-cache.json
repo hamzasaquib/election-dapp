@@ -728,8 +728,8 @@
       ]
     },
     "D:\\project\\react-dapp\\contracts\\Voting.sol": {
-      "lastModificationDate": 1627042340465,
-      "contentHash": "ff3739a30a51c206253014b341adbfce",
+      "lastModificationDate": 1627143559139,
+      "contentHash": "fb2d8078950ab80dfbe2b1fb50d5c0b7",
       "sourceName": "contracts/Voting.sol",
       "solcConfig": {
         "version": "0.8.3",
@@ -755,8 +755,6 @@
       },
       "imports": [
         "./@openzeppelin-contracts/token/ERC721/ERC721.sol",
-        "./@openzeppelin-contracts/token/ERC721/extensions/ERC721Burnable.sol",
-        "./@openzeppelin-contracts/token/ERC721/extensions/ERC721Enumerable.sol",
         "./@openzeppelin-contracts/access/Ownable.sol",
         "./@openzeppelin-contracts/utils/Counters.sol"
       ],
