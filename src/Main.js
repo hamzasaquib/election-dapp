@@ -22,8 +22,10 @@ class Main extends Component {
     }
 
     handleClickDisplay(event) {
-        this.state.view === "admin" ? this.setState({ view: "user" }) : this.setState({ view: "admin" })
-        console.log(event.target.parentElement.id)
+        this.setState({
+            view: event.target.parentElement.id
+
+        })
 
     }
     render() {

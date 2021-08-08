@@ -19,7 +19,7 @@ class Manage extends Component {
             borderRadius: 1,
             color: 'white',
             height: 30,
-            minWidth: '75px'
+            minWidth: '80px'
         })
 
 
@@ -30,7 +30,7 @@ class Manage extends Component {
 
                 >
                     <Box textAlign='center'>
-                        <AdminButton id="voteView"  onClick={this.props.handler}>View</AdminButton>
+                        <AdminButton id="user"  onClick={this.props.handler}>View</AdminButton>
                     </Box>
                     <br />
                     <Grid

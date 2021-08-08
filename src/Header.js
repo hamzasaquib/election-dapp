@@ -12,8 +12,8 @@ function Header() {
             <AppBar position='relative'>
                 <Toolbar>
                     <HowToVoteIcon />
-                    <Typography variant='h6'>
-                        NFTVoting - 2021
+                    <Typography variant='h6'> 
+                     NFTVoting
                     </Typography>
                 </Toolbar>
             </AppBar>

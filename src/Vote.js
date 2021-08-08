@@ -28,7 +28,7 @@ class Vote extends Component {
             borderRadius: 1,
             color: 'white',
             height: 30,
-            minWidth: '75px'
+            minWidth: '80px'
         })
 
 
@@ -40,7 +40,7 @@ class Vote extends Component {
 
                 >
                     <Box textAlign='center'>
-                        <AdminButton id="adminView" onClick={this.props.handler}>Manage</AdminButton>
+                        <AdminButton id="admin" onClick={this.props.handler}>Manage</AdminButton>
                     </Box>
                     <br />
 
