@@ -40,7 +40,7 @@ class Description extends Component {
                             color='textSecondary'
                             paragraph>
 
-                            Use your Non-Fungible Ballot Tokens to vote for your Favourite Candidate!
+                            Use your NFT Ballot to vote for your candidate!
                         </Typography>
                     </Container>
                 </div>

@@ -6,12 +6,9 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 
-class DisplayVotes extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {}
+class Vote extends Component {
+    
 
-    }
 
     render(props) {
         const MyButton = styled(Button)({
@@ -31,6 +28,7 @@ class DisplayVotes extends Component {
             borderRadius: 1,
             color: 'white',
             height: 30,
+            minWidth: '75px'
         })
 
 
@@ -42,8 +40,10 @@ class DisplayVotes extends Component {
 
                 >
                     <Box textAlign='center'>
-                        <AdminButton >Manage</AdminButton>
+                        <AdminButton id="adminView" onClick={this.props.handler}>Manage</AdminButton>
                     </Box>
+                    <br />
+
                     <Grid
                         container
                         spacing={3}
@@ -83,4 +83,4 @@ class DisplayVotes extends Component {
 
 
 
-export default DisplayVotes
+export default Vote

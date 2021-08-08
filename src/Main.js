@@ -1,29 +1,57 @@
 import React, { Component } from 'react'
 import Description from "./Description"
 import Header from "./Header"
-import DisplayVotes from "./DisplayVotes"
+import Conclude from "./Conclude"
+import Vote from "./Vote"
+import Manage from "./Manage"
 
 
 class Main extends Component {
     constructor() {
         super()
-        this.state={active : true}
+        this.state = {
+            active: true,
+            minted: '40',
+            cast: '10',
+            leader: "Hamza",
+            leaderVotes: '10',
+            viewMode: "user",
+            view: "user"
+        }
+        this.handleClickDisplay = this.handleClickDisplay.bind(this)
     }
-    render(){
+
+    handleClickDisplay(event) {
+        this.state.view === "admin" ? this.setState({ view: "user" }) : this.setState({ view: "admin" })
+        console.log(event.target.parentElement.id)
+
+    }
+    render() {
         return (
 
             <div>
                 <Header />
                 <Description />
 
-                <DisplayVotes
-                item = {{
-                    minted : '0',
-                    cast : '0',
-                    leader : "Hamza",
-                    leaderVotes : '0'
-                }}
-                />
+                {/* <Conclude
+
+                    item={{
+                        leader: this.state.leader,
+                        leaderVotes : this.state.leaderVotes
+                    }} /> */}
+
+                {this.state.view === "user" ? <Vote
+                    item={{
+                        minted: this.state.minted,
+                        cast: this.state.cast,
+                        leader: this.state.leader,
+                        leaderVotes: this.state.leaderVotes
+                    }}
+                    handler={this.handleClickDisplay}
+
+                /> : <Manage handler={this.handleClickDisplay} />}
+
+
             </div>
         )
     }
