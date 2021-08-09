@@ -42,8 +42,10 @@ class ManageCandidates extends Component {
                     <Grid item xs={6} sm={6}>
                         <Box align="left">
                             <TextField
-                                id="candidate-address"
+                                name="candidateAddress"
+                                value={this.props.currentState.candidateAddress}
                                 placeholder="0x0"
+                                onChange={this.props.formHandler}
                             /> </Box>
                     </Grid>
 
@@ -53,8 +55,10 @@ class ManageCandidates extends Component {
                     <Grid item xs={6} sm={6}>
                         <Box align="left">
                             <TextField
-                                id="candidate-name"
+                                name="candidateName"
                                 placeholder="Vitalik Buterin"
+                                value={this.props.currentState.candidateName}
+                                onChange={this.props.formHandler}
                             /> </Box>
                     </Grid>
 
@@ -63,8 +67,8 @@ class ManageCandidates extends Component {
                 </Grid>
                 <Box textAlign='center'>
                     <MyButton id="addCandidate" >Add Candidate</MyButton>
-                    <br/><br/>
-                    <Typography variant="subtitle2" >Working...</Typography>
+                    <br /><br />
+                    <Typography variant="subtitle2" >{this.props.currentState.candidateWorking && "Working..."}</Typography>
                 </Box>
             </div>
         )

@@ -14,23 +14,24 @@ class Main extends Component {
 
             //controls rendering of manage and its children
             view: 'user',
-            
-            
+
+
             candidates: true,
             conclude: false,
 
             //controlled form components within the manage section
             //conclude
-            concludeChecked : false,
-            concludeWorking : false,
+            concludeCheck: false,
+            concludeWorking: false,
 
             //candidates
-            candidateAddress : "",
-            candidateName : "",
+            candidateAddress: "",
+            candidateName: "",
             candidateWorking: false,
 
             //minting
-            ETHAddresses : [], 
+            ethAddresses: "",
+            totalMinted: "0",
             mintWorking: false,
 
 
@@ -49,9 +50,9 @@ class Main extends Component {
     }
 
     handleClickDisplay(event) {
-        const {parentElement} = event.target
+        const { parentElement } = event.target
 
-               
+
 
         parentElement.id === 'mint' ?
             this.setState({
@@ -82,14 +83,18 @@ class Main extends Component {
 
     }
 
-    onChainHandler(event){
-        const {name, value, id} = event.target
+    onChainHandler(event) {
+        const { name, value, id } = event.target
         console.log(name, value, id)
-        
+
     }
 
-    formHandler(event){
-        console.log("handling some change")
+    formHandler(event) {
+        const { name, value, checked } = event.target
+        name === "concludeCheck" ?
+            this.setState({ [name]: checked })
+            :
+            this.setState({ [name]: value })
     }
     render() {
         return (
@@ -116,8 +121,8 @@ class Main extends Component {
 
                 />
                     :
-                    <Manage formHandler = {this.formHandler} displayHandler={this.handleClickDisplay} currentState={this.state} />}
-               
+                    <Manage formHandler={this.formHandler} displayHandler={this.handleClickDisplay} currentState={this.state} />}
+
 
             </div>
         )

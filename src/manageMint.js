@@ -11,7 +11,7 @@ import { styled } from '@material-ui/core/styles';
 
 class ManageMint extends Component {
 
-    render() {
+    render(props) {
         const MyButton = styled(Button)({
             background: 'linear-gradient(30deg, #6699cc 30%, #6f9dbe 70%)',
             border: 0,
@@ -39,13 +39,14 @@ class ManageMint extends Component {
                     </Grid>
                     <Grid item xs={12} sm={12}>
                         <Box textAlign='center'>
-                            <TextField
-                                id="mintingAddresses"
+                            <TextField onChange = {this.props.formHandler}
+                                name = "ethAddresses"
                                 label="ETH Addressses"
                                 multiline
                                 placeholder="0x0,0x0"
                                 variant="outlined"
                                 align="center"
+                                value = {this.props.currentState.ethAddresses}
                             />
                         </Box>
 
@@ -53,14 +54,14 @@ class ManageMint extends Component {
 
                     <Grid item xs={12} sm={12}>
                         {/* {this.props.item.leaderVotes} */}
-                        <Typography align="center" variant="subtitle2">Total Votes Minted:</Typography>
+                        <Typography align="center" variant="subtitle2">Total Votes Minted: {this.props.currentState.totalMinted}</Typography>
                         <Box textAlign='center'>
                             <MyButton id="mint" >MINT</MyButton>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={12}>
 
-                        <Typography align="center" variant="subtitle2">Status:</Typography>
+                        <Typography align="center" variant="subtitle2">{this.props.currentState.mintWorking && "Minting..."}</Typography>
 
                     </Grid>
 

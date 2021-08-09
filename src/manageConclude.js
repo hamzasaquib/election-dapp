@@ -34,9 +34,9 @@ class ManageConclude extends Component {
                     
                     <Grid item xs={12} sm={12} align="center">
                         <CheckBox
-                            // checked={state.checked}
-                            // onChange={handleChange}
-                            name="concludeCheckBox"
+                            checked={this.props.currentState.concludeCheck}
+                            onChange={this.props.formHandler}
+                            name="concludeCheck"
                             color="primary"
                             label="When you press conclude, no more votes will be accepted"
                         />

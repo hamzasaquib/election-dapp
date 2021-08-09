@@ -64,9 +64,9 @@ class Manage extends Component {
                         </Grid>
                     </Grid>
 
-                    {this.props.currentState.mint && <ManageMint formHandler={this.props.formHandler} />}
-                    {this.props.currentState.candidates && <ManageCandidates formHandler={this.props.formHandler} />}
-                    {this.props.currentState.conclude && <ManageConclude formHandler={this.props.formHandler} />}
+                    {this.props.currentState.mint && <ManageMint currentState={this.props.currentState} formHandler={this.props.formHandler} />}
+                    {this.props.currentState.candidates && <ManageCandidates currentState={this.props.currentState} formHandler={this.props.formHandler} />}
+                    {this.props.currentState.conclude && <ManageConclude currentState={this.props.currentState} formHandler={this.props.formHandler} />}
 
                 </Container>
 
