@@ -32,7 +32,8 @@ class Manage extends Component {
 
                 >
                     <Box textAlign='center'>
-                        <AdminButton id="user" onClick={this.props.handler}>View</AdminButton>
+                      
+                        <AdminButton id="user" onClick={this.props.displayHandler}>View</AdminButton>
                     </Box>
                     <br />
                     <Grid

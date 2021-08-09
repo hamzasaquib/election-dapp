@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/artifacts/contracts/Voting.sol/MyToken.json
+src/artifacts/contracts/Voting.sol/MyToken.json
+src/artifacts/contracts/Voting.sol/MyToken.dbg.json

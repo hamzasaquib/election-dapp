@@ -54,7 +54,7 @@ class ManageMint extends Component {
 
                     <Grid item xs={12} sm={12}>
                         {/* {this.props.item.leaderVotes} */}
-                        <Typography align="center" variant="subtitle2">Total Votes Minted: {this.props.currentState.totalMinted}</Typography>
+                        <Typography align="center" variant="subtitle2">Total Votes Minted: {this.props.currentState.minted}</Typography>
                         <Box textAlign='center'>
                             <MyButton id="mint" >MINT</MyButton>
                         </Box>

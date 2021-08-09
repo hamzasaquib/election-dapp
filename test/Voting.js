@@ -22,7 +22,7 @@ describe("Voting dApp", function () {
     beforeEach(async function () {
 
         //linking the contract ABI
-        Voting = await ethers.getContractFactory("MyToken");
+        Voting = await ethers.getContractFactory("NFTVoting");
 
         //deconstructing array into owner, candidates and voters
         //signers returns an array of 20 signers on the hardhat testing node

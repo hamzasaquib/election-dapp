@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "./@openzeppelin-contracts/token/ERC721/ERC721.sol";
-import "./@openzeppelin-contracts/access/Ownable.sol";
-import "./@openzeppelin-contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 /// @author Muhammad Hamza Saquib Malik
 /// @title a simple voting application using NFTs for ballots
 
 
-contract MyToken is ERC721, Ownable {
+contract NFTVoting is ERC721, Ownable {
 
     //counter allows for unique UUIDs on each ballot
     using Counters for Counters.Counter;
