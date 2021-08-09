@@ -4,8 +4,11 @@ import Box from '@material-ui/core/Box';
 import { styled } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import ManageMint from "./ManageMint"
+import ManageCandidates from './ManageCandidates';
+import ManageConclude from './ManageConclude';
+
 
 class Manage extends Component {
 
@@ -22,7 +25,6 @@ class Manage extends Component {
             minWidth: '80px'
         })
 
-
         return (
             <div>
                 <Container
@@ -30,7 +32,7 @@ class Manage extends Component {
 
                 >
                     <Box textAlign='center'>
-                        <AdminButton id="user"  onClick={this.props.handler}>View</AdminButton>
+                        <AdminButton id="user" onClick={this.props.handler}>View</AdminButton>
                     </Box>
                     <br />
                     <Grid
@@ -47,38 +49,27 @@ class Manage extends Component {
                                 fullWidth={true}
 
                             >
-                                <Button>
+                                <Button id="mint" onClick={this.props.displayHandler}>
                                     Mint
                                 </Button>
 
-                                <Button>
+                                <Button id="candidates" onClick={this.props.displayHandler}>
                                     Candidates
                                 </Button>
-                                <Button>
+                                <Button id="conclude" onClick={this.props.displayHandler}>
                                     Conclude
                                 </Button>
 
                             </ButtonGroup>
                         </Grid>
-
-
-
-                        <Grid item xs={12} sm={6}>
-                            <Typography align="center" variant="h6">Admin things</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Typography align="center" variant="h6">Votes Cast</Typography>
-
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Typography align="center" variant="h4">Leading</Typography>
-
-                        </Grid>
-
-
                     </Grid>
 
+                    {this.props.currentState.mint && <ManageMint formHandler={this.props.formHandler} />}
+                    {this.props.currentState.candidates && <ManageCandidates formHandler={this.props.formHandler} />}
+                    {this.props.currentState.conclude && <ManageConclude formHandler={this.props.formHandler} />}
+
                 </Container>
+
             </div >
         )
     }
