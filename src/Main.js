@@ -4,7 +4,10 @@ import Header from "./Header"
 // import Conclude from "./Conclude"
 import Vote from "./Vote"
 import Manage from "./Manage"
+//importing smart contract ABI
+import NFTVoting from "./artifacts/contracts/Voting.sol/NFTVoting.json"
 
+const votingAddress = ""
 
 
 class Main extends Component {
@@ -12,10 +15,8 @@ class Main extends Component {
         super()
         this.state = {
 
-            //controls rendering of manage and its children
+            //controls rendering of manage and its children components
             view: 'user',
-
-
             candidates: true,
             conclude: false,
 
@@ -31,7 +32,7 @@ class Main extends Component {
 
             //minting
             ethAddresses: "",
-            totalMinted: "0",
+            
             mintWorking: false,
 
 
@@ -41,7 +42,7 @@ class Main extends Component {
             cast: '10',
             leader: 'Hamza',
             leaderVotes: '10',
-            votesMinting: '0',
+            
 
         }
         this.handleClickDisplay = this.handleClickDisplay.bind(this)
@@ -51,8 +52,7 @@ class Main extends Component {
 
     handleClickDisplay(event) {
         const { parentElement } = event.target
-
-
+        
 
         parentElement.id === 'mint' ?
             this.setState({
@@ -78,6 +78,7 @@ class Main extends Component {
 
                     this.setState({
                         view: parentElement.id
+
 
                     })
 
