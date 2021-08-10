@@ -31,7 +31,7 @@ class ManageCandidates extends Component {
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={12}>
-                        <Typography align="center" variant="h2">Add Candidates</Typography>
+                        <Typography align="center" variant="h3">Add Candidates</Typography>
                     </Grid>
 
 
@@ -49,24 +49,14 @@ class ManageCandidates extends Component {
                             /> </Box>
                     </Grid>
 
-                    <Grid item xs={6} sm={6}>
-                        <Typography align="right" variant="subtitle1">Display Name:</Typography>
-                    </Grid>
-                    <Grid item xs={6} sm={6}>
-                        <Box align="left">
-                            <TextField
-                                name="candidateName"
-                                placeholder="Vitalik Buterin"
-                                value={this.props.currentState.candidateName}
-                                onChange={this.props.formHandler}
-                            /> </Box>
-                    </Grid>
+                    
 
 
 
                 </Grid>
                 <Box textAlign='center'>
-                    <MyButton id="addCandidate" >Add Candidate</MyButton>
+                    <MyButton id="addCandidateButton" onClick = {this.props.onChainHandler}>Add Candidate</MyButton>
+                    
                     <br /><br />
                     <Typography variant="subtitle2" >{this.props.currentState.candidateWorking && "Working..."}</Typography>
                 </Box>

@@ -5,12 +5,23 @@ import { styled } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+
+
+
 
 class Vote extends Component {
-    
 
 
     render(props) {
+
+        const candidates = this.props.currentState.electionCandidates.map(candidate => {
+            return (
+                <MenuItem value={candidate} key={candidate}>{candidate}</MenuItem>)
+        })
+
         const MyButton = styled(Button)({
             background: 'linear-gradient(30deg, #6699cc 30%, #6f9dbe 70%)',
             border: 0,
@@ -54,24 +65,42 @@ class Vote extends Component {
 
                         <Grid item xs={12} sm={6}>
                             <Typography align="center" variant="h6">Votes Minted</Typography>
-                            <Typography align="center" variant="h4">{this.props.item.minted}</Typography>
+                            <Typography align="center" variant="h4">{this.props.currentState.minted}</Typography>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <Typography align="center" variant="h6">Votes Cast</Typography>
-                            <Typography align="center" variant="h4">{this.props.item.cast}</Typography>
+                            <Typography align="center" variant="h4">{this.props.currentState.cast}</Typography>
 
                         </Grid>
                         <Grid item xs={12} >
-                            <Typography align="center" variant="h4">Leading</Typography>
-                            <Typography align="center" variant="h6">{this.props.item.leader}</Typography>
-                            <Typography align="center" variant="h5">{this.props.item.leaderVotes}</Typography>
+                            <Typography align="center" variant="h6">Current Leader</Typography>
+                            <Typography align="center" variant="subtitle1">{this.props.currentState.leader}</Typography>
+
+                            <Typography align="center" variant="h6">{this.props.currentState.leaderVotes} Votes</Typography>
 
                         </Grid>
+                        <Grid item xs={12} >
+                            <Box textAlign='center'>
+                                <InputLabel>Select Candidate</InputLabel>
+                                <Select
+                                    id="voterSelect"
+                                    name="selectedCandidate"
+                                    value={this.props.currentState.selectedCandidate}
+                                    onChange={this.props.formHandler}
 
+                                >
+
+                                    {candidates}
+                                </Select>
+                            </Box>
+                        </Grid>
 
                     </Grid>
                     <Box textAlign='center'>
-                        <MyButton >Vote</MyButton>
+                        <MyButton id="voteButton" onClick={this.props.onChainHandler}>Vote</MyButton>
+                        <br /><br />
+                        <Typography variant="subtitle2" >{this.props.currentState.voteWorking && "Working..."}</Typography>
+
                     </Box>
                 </Container>
             </div >

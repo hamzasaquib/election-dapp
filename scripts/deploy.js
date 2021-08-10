@@ -14,12 +14,29 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const NFTVoting = await hre.ethers.getContractFactory("NFTVoting");
-  const voting = await NFTVoting.deploy("Hello, Hardhat!");
+  const Voting = await ethers.getContractFactory("NFTVoting");
+  const NFTVoting = await Voting.deploy();
 
-  await voting.deployed();
+  await NFTVoting.deployed();
 
-  console.log("NFTVoting.sol deployed to:", voting.address);
+  [owner, cand1, cand2, cand3, ...voters] = await ethers.getSigners();
+
+  //adding three candidates
+  await NFTVoting.addCandidates(cand1.address);
+  await NFTVoting.addCandidates(cand2.address);
+  await NFTVoting.addCandidates(cand3.address);
+
+  for (const voter of voters) {
+    const transaction = await NFTVoting.safeMint(voter.address)
+    transaction.wait()
+  }
+
+
+  await NFTVoting.connect(voters[0]).vote(cand1.address);
+  await NFTVoting.connect(voters[1]).vote(cand2.address);
+  await NFTVoting.connect(voters[2]).vote(cand1.address);
+
+  console.log("NFTVoting.sol deployed to:", NFTVoting.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

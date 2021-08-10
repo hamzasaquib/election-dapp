@@ -32,7 +32,7 @@ class Manage extends Component {
 
                 >
                     <Box textAlign='center'>
-                      
+
                         <AdminButton id="user" onClick={this.props.displayHandler}>View</AdminButton>
                     </Box>
                     <br />
@@ -65,9 +65,9 @@ class Manage extends Component {
                         </Grid>
                     </Grid>
 
-                    {this.props.currentState.mint && <ManageMint currentState={this.props.currentState} formHandler={this.props.formHandler} />}
-                    {this.props.currentState.candidates && <ManageCandidates currentState={this.props.currentState} formHandler={this.props.formHandler} />}
-                    {this.props.currentState.conclude && <ManageConclude currentState={this.props.currentState} formHandler={this.props.formHandler} />}
+                    {this.props.currentState.mint && <ManageMint currentState={this.props.currentState} formHandler={this.props.formHandler} onChainHandler={this.props.onChainHandler} />}
+                    {this.props.currentState.candidates && <ManageCandidates currentState={this.props.currentState} formHandler={this.props.formHandler} onChainHandler={this.props.onChainHandler} />}
+                    {this.props.currentState.conclude && <ManageConclude currentState={this.props.currentState} formHandler={this.props.formHandler} onChainHandler={this.props.onChainHandler} />}
 
                 </Container>
 

@@ -7,7 +7,9 @@ import Manage from "./Manage"
 //importing smart contract ABI
 import NFTVoting from "./artifacts/contracts/Voting.sol/NFTVoting.json"
 
-const votingAddress = ""
+import { ethers } from 'ethers'
+
+const votingAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 
 
 class Main extends Component {
@@ -20,39 +22,164 @@ class Main extends Component {
             candidates: true,
             conclude: false,
 
-            //controlled form components within the manage section
+            //variables for controlled form components within the manage section
             //conclude
             concludeCheck: false,
-            concludeWorking: false,
 
             //candidates
             candidateAddress: "",
-            candidateName: "",
             candidateWorking: false,
 
             //minting
             ethAddresses: "",
-            
             mintWorking: false,
+
+            //vote selection
+            selectedCandidate: "",
+            voteWorking: false,
 
 
             //data from smart contract API
             active: true,
-            minted: '40',
-            cast: '10',
-            leader: 'Hamza',
-            leaderVotes: '10',
-            
+            electionCandidates: [],
+            minted: '?',
+            cast: '?',
+            leader: '?',
+            leaderVotes: '?',
+
 
         }
         this.handleClickDisplay = this.handleClickDisplay.bind(this)
         this.onChainHandler = this.onChainHandler.bind(this)
         this.formHandler = this.formHandler.bind(this)
+        this.fetchData = this.fetchData.bind(this)
     }
+
+    async requestAccount() {
+        //requests the client to give access to their meta mask account's data
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+    }
+
+    async fetchData() {
+
+        if (typeof window.ethereum !== 'undefined') {
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const contract = new ethers.Contract(votingAddress, NFTVoting.abi, provider)
+
+            try {
+                //adding 1 to count since counter is initialized with 0
+                const votes = (await contract.total()).toNumber() + 1
+                let [candidate, count] = await contract.highestVotes()
+                const allCandidates = await contract.allCandidates()
+                const totalVotes = (await contract.totalVotesCast()).toString()
+
+                this.setState({
+                    minted: votes,
+                    leader: candidate,
+                    leaderVotes: count.toString(),
+                    electionCandidates: allCandidates,
+                    cast: totalVotes
+
+                })
+            }
+            catch (err) {
+                console.log('Error:', err)
+            }
+        }
+    }
+
+    async addCandidate(addressToAdd) {
+        if (!addressToAdd) return
+
+        if (typeof window.ethereum !== 'undefined') {
+            this.setState({ candidateWorking: true })
+            await this.requestAccount()
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const signer = provider.getSigner()
+            const contract = new ethers.Contract(votingAddress, NFTVoting.abi, signer)
+
+            console.log(this.state.electionCandidates)
+            try {
+                const transaction = await contract.addCandidates(addressToAdd)
+                await transaction.wait()
+                console.log(this.state.electionCandidates)
+            }
+            catch (err) {
+                console.log('Error:', err)
+            }
+
+            this.setState({ candidateWorking: false })
+
+        }
+    }
+
+    async mintTokens(addressToMint) {
+        this.setState({ mintWorking: true })
+        console.log(addressToMint)
+        this.setState({ mintWorking: false })
+    }
+
+    async conclude() {
+        console.log(this.state.concludeCheck)
+    }
+
+    async sendVote(candidateToVote) {
+        
+        if (!candidateToVote) return
+
+        if (typeof window.ethereum !== 'undefined') {
+            this.setState({ voteWorking: true })
+            await this.requestAccount()
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const signer = provider.getSigner()
+            const contract = new ethers.Contract(votingAddress, NFTVoting.abi, signer)
+
+            console.log(this.state.electionCandidates)
+            try {
+               
+                const transaction = await contract.vote(candidateToVote)
+                await transaction.wait()
+                alert("Success!")
+                
+            }
+            catch (err) {
+                console.log('Error:', err)
+            }
+
+            this.setState({ voteWorking: false })
+
+        }
+    }
+    //function to handle writing data to the blockchain
+    onChainHandler(event) {
+        const { parentElement } = event.target
+
+        if (parentElement.id === "voteButton") {
+            console.log('clicked voteButton')
+            this.sendVote(this.state.selectedCandidate)
+
+        }
+        if (parentElement.id === "mintButton") {
+            console.log('clicked mintButton')
+            this.mintTokens(this.state.ethAddresses)
+        }
+
+        else if (parentElement.id === "addCandidateButton") {
+            console.log('clicked addCandidateButton')
+            this.addCandidate(this.state.candidateAddress)
+        }
+        else if (parentElement.id === "concludeButton") {
+            console.log('clicked concludeButton')
+            this.conclude()
+
+        }
+    }
+
+
 
     handleClickDisplay(event) {
         const { parentElement } = event.target
-        
+
 
         parentElement.id === 'mint' ?
             this.setState({
@@ -60,14 +187,14 @@ class Main extends Component {
                 candidates: false,
                 conclude: false
             })
-
             :
             parentElement.id === 'candidates' ? this.setState({
                 mint: false,
                 candidates: true,
                 conclude: false
-            })
 
+            }
+            )
                 :
                 parentElement.id === 'conclude' ? this.setState({
                     mint: false,
@@ -75,7 +202,6 @@ class Main extends Component {
                     conclude: true
                 })
                     :
-
                     this.setState({
                         view: parentElement.id
 
@@ -84,11 +210,7 @@ class Main extends Component {
 
     }
 
-    onChainHandler(event) {
-        const { name, value, id } = event.target
-        console.log(name, value, id)
 
-    }
 
     formHandler(event) {
         const { name, value, checked } = event.target
@@ -96,33 +218,34 @@ class Main extends Component {
             this.setState({ [name]: checked })
             :
             this.setState({ [name]: value })
+            
     }
+
+    componentDidMount() {
+        this.requestAccount()
+        this.fetchData()
+
+    }
+
+
     render() {
         return (
-
             <div>
                 <Header />
                 <Description />
-
                 {/* <Conclude
-
                     item={{
                         leader: this.state.leader,
                         leaderVotes : this.state.leaderVotes
                     }} /> */}
-
                 {this.state.view === "user" ? <Vote
-                    item={{
-                        minted: this.state.minted,
-                        cast: this.state.cast,
-                        leader: this.state.leader,
-                        leaderVotes: this.state.leaderVotes
-                    }}
+                    currentState={this.state}
                     handler={this.handleClickDisplay}
-
+                    formHandler={this.formHandler}
+                    onChainHandler={this.onChainHandler}
                 />
                     :
-                    <Manage formHandler={this.formHandler} displayHandler={this.handleClickDisplay} currentState={this.state} />}
+                    <Manage onChainHandler={this.onChainHandler} formHandler={this.formHandler} displayHandler={this.handleClickDisplay} currentState={this.state} />}
 
 
             </div>

@@ -5,27 +5,14 @@ import Typography from '@material-ui/core/Typography'
 
 
 class Description extends Component {
-    constructor() {
-        super()
-        this.State = {
-            candidates: [],
-            view: "display",
-            active: true,
-            minted : "",
-            cast : "",
-            leader : "",
-            leaderVotes : ""
-        }
-    }
 
-    
     render() {
-
-
         return (
             <div>
                 <div>
                     <Container maxWidth="sm">
+                        <br/>
+                        <br/>
                         <Typography
                             variant='h2'
                             align='center'

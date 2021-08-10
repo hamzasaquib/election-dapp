@@ -29,7 +29,7 @@ class ManageConclude extends Component {
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={12}>
-                        <Typography align="center" variant="h2">Conclude Election</Typography>
+                        <Typography align="center" variant="h3">Conclude Election</Typography>
                     </Grid>
                     
                     <Grid item xs={12} sm={12} align="center">
@@ -45,7 +45,7 @@ class ManageConclude extends Component {
 
                 </Grid>
                 <Box textAlign='center'>
-                    <MyButton id="conclude" size="medium" >Conclude</MyButton>
+                    <MyButton id="concludeButton" size="medium" onClick = {this.props.onChainHandler}>Conclude</MyButton>
                 </Box>
             </div>
         )

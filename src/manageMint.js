@@ -31,7 +31,7 @@ class ManageMint extends Component {
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={12}>
-                        <Typography align="center" variant="h2">Minting</Typography>
+                        <Typography align="center" variant="h3">Minting</Typography>
                     </Grid>
                     <Grid item xs={12} sm={12}>
                         <Typography align="center" variant="subtitle1">Enter Comma Seperated Voter Addresses</Typography>
@@ -39,14 +39,14 @@ class ManageMint extends Component {
                     </Grid>
                     <Grid item xs={12} sm={12}>
                         <Box textAlign='center'>
-                            <TextField onChange = {this.props.formHandler}
-                                name = "ethAddresses"
+                            <TextField onChange={this.props.formHandler}
+                                name="ethAddresses"
                                 label="ETH Addressses"
                                 multiline
                                 placeholder="0x0,0x0"
                                 variant="outlined"
                                 align="center"
-                                value = {this.props.currentState.ethAddresses}
+                                value={this.props.currentState.ethAddresses}
                             />
                         </Box>
 
@@ -56,7 +56,7 @@ class ManageMint extends Component {
                         {/* {this.props.item.leaderVotes} */}
                         <Typography align="center" variant="subtitle2">Total Votes Minted: {this.props.currentState.minted}</Typography>
                         <Box textAlign='center'>
-                            <MyButton id="mint" >MINT</MyButton>
+                            <MyButton id="mintButton" onClick={this.props.onChainHandler}>MINT</MyButton>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={12}>
