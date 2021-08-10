@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import Description from "./Description"
 import Header from "./Header"
-// import Conclude from "./Conclude"
+import Conclude from "./Conclude"
 import Vote from "./Vote"
 import Manage from "./Manage"
+import { ethers } from 'ethers'
+
 //importing smart contract ABI
 import NFTVoting from "./artifacts/contracts/Voting.sol/NFTVoting.json"
-
-import { ethers } from 'ethers'
 
 const votingAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 
@@ -72,13 +72,16 @@ class Main extends Component {
                 let [candidate, count] = await contract.highestVotes()
                 const allCandidates = await contract.allCandidates()
                 const totalVotes = (await contract.totalVotesCast()).toString()
+                const status = await contract.active()
+
 
                 this.setState({
                     minted: votes,
                     leader: candidate,
                     leaderVotes: count.toString(),
                     electionCandidates: allCandidates,
-                    cast: totalVotes
+                    cast: totalVotes,
+                    active: status
 
                 })
             }
@@ -102,7 +105,6 @@ class Main extends Component {
             try {
                 const transaction = await contract.addCandidates(addressToAdd)
                 await transaction.wait()
-                console.log(this.state.electionCandidates)
             }
             catch (err) {
                 console.log('Error:', err)
@@ -120,11 +122,29 @@ class Main extends Component {
     }
 
     async conclude() {
-        console.log(this.state.concludeCheck)
+        if (!this.state.concludeCheck) return
+        if (typeof window.ethereum !== 'undefined') {
+            await this.requestAccount()
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const signer = provider.getSigner()
+            const contract = new ethers.Contract(votingAddress, NFTVoting.abi, signer)
+
+            console.log(this.state.electionCandidates)
+            try {
+                const transaction = await contract.conclude()
+                await transaction.wait()
+            }
+            catch (err) {
+                console.log('Error:', err)
+            }
+
+
+        }
+
     }
 
     async sendVote(candidateToVote) {
-        
+
         if (!candidateToVote) return
 
         if (typeof window.ethereum !== 'undefined') {
@@ -136,11 +156,11 @@ class Main extends Component {
 
             console.log(this.state.electionCandidates)
             try {
-               
+
                 const transaction = await contract.vote(candidateToVote)
                 await transaction.wait()
                 alert("Success!")
-                
+
             }
             catch (err) {
                 console.log('Error:', err)
@@ -218,7 +238,7 @@ class Main extends Component {
             this.setState({ [name]: checked })
             :
             this.setState({ [name]: value })
-            
+
     }
 
     componentDidMount() {
@@ -232,20 +252,28 @@ class Main extends Component {
         return (
             <div>
                 <Header />
-                <Description />
-                {/* <Conclude
-                    item={{
-                        leader: this.state.leader,
-                        leaderVotes : this.state.leaderVotes
-                    }} /> */}
-                {this.state.view === "user" ? <Vote
-                    currentState={this.state}
-                    handler={this.handleClickDisplay}
-                    formHandler={this.formHandler}
-                    onChainHandler={this.onChainHandler}
-                />
-                    :
-                    <Manage onChainHandler={this.onChainHandler} formHandler={this.formHandler} displayHandler={this.handleClickDisplay} currentState={this.state} />}
+
+                {this.state.active && <Description />}
+
+                {!this.state.active ?
+
+                    <Conclude
+                        currentState={this.state} /> :
+
+
+
+
+                    this.state.view === "user" ? <Vote
+                        currentState={this.state}
+                        handler={this.handleClickDisplay}
+                        formHandler={this.formHandler}
+                        onChainHandler={this.onChainHandler}
+                    />
+                        :
+                        <Manage onChainHandler={this.onChainHandler} formHandler={this.formHandler} displayHandler={this.handleClickDisplay} currentState={this.state} />
+                }
+
+
 
 
             </div>

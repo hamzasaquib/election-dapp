@@ -23,18 +23,22 @@ class Conclude extends Component {
                         alignItems="center"
                     >
 
-
+                        <br/>
+                        
                         <Grid item xs={12} sm={12}>
+                            <Typography align="center" variant="h1" style={{paddingTop:'25px'}}>Concluded</Typography>
+                            <br/>
                             <Typography align="center" variant="h2">Winner</Typography>
                         </Grid>
                         <Grid item xs={12} sm={12}>
-                            <Typography align="center" variant="h4">{this.props.item.leader}</Typography>
-
+                            <Typography align="center" variant="h5">{this.props.currentState.leader}</Typography>
                         </Grid>
                         <Grid item xs={12} sm = {12}>
-                            <Typography align="center" variant="h4">{this.props.item.leaderVotes}</Typography>
-                            {/* <Typography align="center" variant="h6">{this.props.item.leader}</Typography>
-                            <Typography align="center" variant="h5">{this.props.item.leaderVotes}</Typography> */}
+                            <Typography align="center" variant="h5">Votes</Typography>
+                            <Typography align="center" variant="h4">{this.props.currentState.leaderVotes}</Typography>
+                                <br/>
+                            <Typography align="center" variant="subtitle1">Total Votes Cast: {this.props.currentState.cast}</Typography>
+                            <Typography align="center" variant="subtitle1">Total Votes Minted: {this.props.currentState.minted}</Typography>
 
                         </Grid>
 
