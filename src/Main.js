@@ -175,21 +175,17 @@ class Main extends Component {
         const { parentElement } = event.target
 
         if (parentElement.id === "voteButton") {
-            console.log('clicked voteButton')
             this.sendVote(this.state.selectedCandidate)
 
         }
         if (parentElement.id === "mintButton") {
-            console.log('clicked mintButton')
             this.mintTokens(this.state.ethAddresses)
         }
 
         else if (parentElement.id === "addCandidateButton") {
-            console.log('clicked addCandidateButton')
             this.addCandidate(this.state.candidateAddress)
         }
         else if (parentElement.id === "concludeButton") {
-            console.log('clicked concludeButton')
             this.conclude()
 
         }

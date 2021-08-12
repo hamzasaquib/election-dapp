@@ -34,7 +34,7 @@ class ManageMint extends Component {
                         <Typography align="center" variant="h3">Minting</Typography>
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                        <Typography align="center" variant="subtitle1">Enter Comma Seperated Voter Addresses</Typography>
+                        <Typography align="center" variant="subtitle1">Enter Voter Address</Typography>
 
                     </Grid>
                     <Grid item xs={12} sm={12}>
