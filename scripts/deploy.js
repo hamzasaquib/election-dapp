@@ -19,7 +19,7 @@ async function main() {
 
   await NFTVoting.deployed();
 
-  [owner, cand1, cand2, cand3, ...voters] = await ethers.getSigners();
+  [owner, cand1, cand2, cand3, voter1, ...voters] = await ethers.getSigners();
 
   //adding three candidates
   await NFTVoting.addCandidates(cand1.address);
@@ -35,6 +35,8 @@ async function main() {
   await NFTVoting.connect(voters[0]).vote(cand1.address);
   await NFTVoting.connect(voters[1]).vote(cand2.address);
   await NFTVoting.connect(voters[2]).vote(cand1.address);
+  await NFTVoting.connect(voters[3]).vote(cand1.address);
+  await NFTVoting.connect(voters[4]).vote(cand1.address);
 
   console.log("NFTVoting.sol deployed to:", NFTVoting.address);
 }
