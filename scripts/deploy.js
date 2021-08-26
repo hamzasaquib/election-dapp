@@ -26,17 +26,19 @@ async function main() {
   await NFTVoting.addCandidates(cand2.address);
   await NFTVoting.addCandidates(cand3.address);
 
-  for (const voter of voters) {
-    const transaction = await NFTVoting.safeMint(voter.address)
-    transaction.wait()
-  }
+  // for (const voter of voters) {
+  //   const transaction = await NFTVoting.safeMint(voter.address)
+  //   transaction.wait()
+  // }
 
 
-  await NFTVoting.connect(voters[0]).vote(cand1.address);
-  await NFTVoting.connect(voters[1]).vote(cand2.address);
-  await NFTVoting.connect(voters[2]).vote(cand1.address);
-  await NFTVoting.connect(voters[3]).vote(cand1.address);
-  await NFTVoting.connect(voters[4]).vote(cand1.address);
+  // await NFTVoting.connect(voters[0]).vote(cand1.address);
+  // await NFTVoting.connect(voters[1]).vote(cand2.address);
+  // await NFTVoting.connect(voters[2]).vote(cand1.address);
+  // await NFTVoting.connect(voters[3]).vote(cand1.address);
+  // await NFTVoting.connect(voters[4]).vote(cand1.address);
+
+  
 
   console.log("NFTVoting.sol deployed to:", NFTVoting.address);
 }

@@ -31,7 +31,7 @@ class ManageCandidates extends Component {
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={12}>
-                        <Typography align="center" variant="h3">Add Candidates</Typography>
+                        <Typography align="center" variant="h4" style={{marginTop: "5px"}}>Add Candidates</Typography>
                     </Grid>
 
 

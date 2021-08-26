@@ -17,6 +17,8 @@ describe("Voting dApp", function () {
     let Voting;
     let NFTVoting;
 
+
+
     //beforeEach will be executed before every unit test
 
     beforeEach(async function () {
@@ -41,16 +43,30 @@ describe("Voting dApp", function () {
         await NFTVoting.safeMint(voter2.address);
         await NFTVoting.safeMint(voter3.address);
 
-    });
+    }
+    );
 
-
-    describe("Testing deployment, safeMint and balanceOf ", function () {
+    describe("safeMint, safeMintMany", function () {
         it("Minting a ballot and transfering it to an address on the network", async function () {
             expect(await NFTVoting.balanceOf(voter1.address)).to.equal(1);
         });
 
         it("Attempting to send a voter a ballot twice", async function () {
             await expect(NFTVoting.safeMint(voter1.address)).to.be.revertedWith("Ballot Found");
+        });
+
+        it("Testing safeMintMany", async function () {
+            //mapping voters to an array of addresses
+            let addresses = [];
+            for (let i = 0; i < voters.length; i++) {
+                addresses[i] = voters[i].address
+            }
+
+            NFTVoting.safeMintMany(addresses)
+
+            for (let i = 0; i < voters.length; i++) {
+                expect(await NFTVoting.balanceOf(addresses[0])).to.equal(1);
+            }
         });
     });
 

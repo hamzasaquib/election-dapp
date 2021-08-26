@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "D:\\project\\react-dapp\\contracts\\Voting.sol": {
-      "lastModificationDate": 1629475655004,
-      "contentHash": "e247dd4772b73c8ff05246ce4b6ffdd7",
+      "lastModificationDate": 1629987478827,
+      "contentHash": "101c2cea46c00f1c514e710feaec7955",
       "sourceName": "contracts/Voting.sol",
       "solcConfig": {
         "version": "0.8.3",

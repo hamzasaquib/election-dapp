@@ -9,8 +9,8 @@ import { ethers } from 'ethers'
 //importing smart contract ABI
 import NFTVoting from "./artifacts/contracts/Voting.sol/NFTVoting.json"
 
+//address of smart contract
 const votingAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
-
 
 class Main extends Component {
     constructor() {
@@ -66,6 +66,8 @@ class Main extends Component {
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             const contract = new ethers.Contract(votingAddress, NFTVoting.abi, provider)
 
+
+
             try {
                 //adding 1 to count since counter is initialized with 0
                 const votes = (await contract.total()).toNumber() + 1
@@ -120,27 +122,48 @@ class Main extends Component {
     async mintTokens(addressToMint) {
         if (!addressToMint) return
         if (typeof window.ethereum !== 'undefined') {
+
             this.setState({ mintWorking: true })
             await this.requestAccount()
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             const signer = provider.getSigner()
             const contract = new ethers.Contract(votingAddress, NFTVoting.abi, signer)
 
-            try {
-                const transaction = await contract.safeMint(addressToMint)
-                await transaction.wait()
-            }
-            catch (err) {
-                console.log('Error:', err.message)
+            if (addressToMint.length > 43) {
+                contract.once("minted", (minted) => {
+
+                    console.log(minted);
+                })
+
+                try {
+                    const arrayOfAddresses = addressToMint.split(",")
+                    console.log(arrayOfAddresses)
+                    const transaction = await contract.safeMintMany(arrayOfAddresses)
+                    await transaction.wait()
+                }
+                catch (err) {
+                    console.log('Error:', err.message)
+                }
             }
 
-            
-
+            else {
+                try {
+                    const transaction = await contract.safeMint(addressToMint)
+                    await transaction.wait()
+                }
+                catch (err) {
+                    console.log('Error:', err.message)
+                }
+            }
         }
-        this.fetchData()
 
+
+        this.fetchData()
         this.setState({ mintWorking: false })
+
     }
+
+
 
     async conclude() {
         if (!this.state.concludeCheck) return
@@ -210,7 +233,7 @@ class Main extends Component {
             this.conclude()
 
         }
-               
+
     }
 
 
@@ -260,12 +283,12 @@ class Main extends Component {
     }
 
     componentDidMount() {
+
         this.requestAccount()
         this.fetchData()
-
     }
 
-   
+
     render() {
         return (
             <div>
