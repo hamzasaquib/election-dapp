@@ -11,7 +11,6 @@ import NFTVoting from "./artifacts/contracts/Voting.sol/NFTVoting.json"
 
 const votingAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 
-//TODO view is only visible to owner
 
 class Main extends Component {
     constructor() {
@@ -177,7 +176,6 @@ class Main extends Component {
             const signer = provider.getSigner()
             const contract = new ethers.Contract(votingAddress, NFTVoting.abi, signer)
 
-            console.log(this.state.electionCandidates)
             try {
 
                 const transaction = await contract.vote(candidateToVote)
